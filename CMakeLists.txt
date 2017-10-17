@@ -6,7 +6,8 @@ include(Package_Definition NO_POLICY_SCOPE)
 PROJECT(copra)
 
 declare_PID_Package(	AUTHOR 		Vincent Samy
-			YEAR 		2017 
+			 ADDRESS git@github.com:vsamy/copra.git
+	 YEAR 		2017 
 			LICENSE 	CeCILL-C
 			DESCRIPTION 	TODO: input a short description of package copra utility here
 		)
