@@ -3,6 +3,7 @@ declare_PID_Component(
     NAME copra
     DIRECTORY copra
     CXX_STANDARD 14
+    INTERNAL DEFINITIONS ${COMPILER_DEFS}
 )
 
 declare_PID_Component_Dependency(
@@ -11,17 +12,21 @@ declare_PID_Component_Dependency(
     PACKAGE eigen
 )
 
-declare_PID_Component_Dependency(
-    COMPONENT copra
-    EXPORT NATIVE eigen-quadprog
-    PACKAGE eigen-qp
-)
+if(${EIGEN_QUADPROG})
+    declare_PID_Component_Dependency(
+        COMPONENT copra
+        EXPORT NATIVE eigen-quadprog
+        PACKAGE eigen-qp
+    )
+endif()
 
-declare_PID_Component_Dependency(
-    COMPONENT copra
-    EXPORT NATIVE eigen-qld
-    PACKAGE eigen-qp
-)
+if(${EIGEN_QLD})
+    declare_PID_Component_Dependency(
+        COMPONENT copra
+        EXPORT NATIVE eigen-qld
+        PACKAGE eigen-qp
+    )
+endif()
 
 #declare the python module
 
@@ -31,6 +36,7 @@ declare_PID_Component(
     DIRECTORY pyCopra
     CXX_STANDARD 14
     INTERNAL COMPILER_OPTIONS -Wno-deprecated-declarations
+             DEFINITIONS ${COMPILER_DEFS}
 )
 
 declare_PID_Component_Dependency(

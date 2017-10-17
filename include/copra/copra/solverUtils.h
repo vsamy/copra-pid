@@ -15,17 +15,19 @@ namespace copra {
  * Enum class that handles flag for selecting a qp solver.
  */
 enum class SolverFlag {
-    DEFAULT, /**< Default solver (QuadProgDense solver) */
-#ifdef EIGEN_LSSOL_FOUND
-    LSSOL, /**< Standford LSSOL solver */
-#endif
-#ifdef EIGEN_GUROBI_FOUND
-    GUROBIDense, /**< Gurobi quadratic dense solver */
-#endif
-#ifdef EIGEN_QLD_FOUND
+    DEFAULT, /**< Default solver depending on compilation parameters (QuadProgDense -> QLD -> LSSOL -> GUROBI) */
+// #if EIGEN_LSSOL
+//     LSSOL, /**< Standford LSSOL solver */
+// #endif
+// #if EIGEN_GUROBI
+//     GUROBIDense, /**< Gurobi quadratic dense solver */
+// #endif
+#ifdef EIGEN_QLD
     QLD, /**< Scilab QLD solver */
 #endif
+#ifdef EIGEN_QUADPROG
     QuadProgDense, /**< DenseMatrix version of QuadProg solver */
+#endif
     // QuadProgSparse
 };
 

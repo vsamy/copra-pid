@@ -28,75 +28,56 @@
 #include <Eigen/Core>
 
 // copra
-#include "QuadProgSolver.h"
-
-// optional mpc
-#include "solverConfig.h"
+#include <copra/solverUtils.h>
 
 // Tests problems
 #include "systems.h"
 
+//TODO: better checks
+#ifdef EIGEN_QUADPROG
 BOOST_FIXTURE_TEST_CASE(QuadProgTest, Problem)
 {
-    copra::QuadProgDenseSolver qpQuadProg;
+    auto qp = solverFactory(copra::SolverFlag::QuadProgDense);
 
-    qpQuadProg.SI_problem(nrvars, nreqs, nrineqs);
-    BOOST_REQUIRE(qpQuadProg.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
+    qp->SI_problem(nrvars, nreqs, nrineqs);
+    BOOST_REQUIRE(qp->SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
 
-    BOOST_REQUIRE_EQUAL(qpQuadProg.SI_fail(), 0);
-}
-
-#ifdef EIGEN_QLD_FOUND
-BOOST_FIXTURE_TEST_CASE(QLDOnQuadProgTest, Problem)
-{
-    copra::QLDSolver qpQLD;
-    copra::QuadProgDenseSolver qpQuadProg;
-
-    qpQLD.SI_problem(nrvars, nreqs, nrineqs);
-    qpQuadProg.SI_problem(nrvars, nreqs, nrineqs);
-    BOOST_REQUIRE(qpQLD.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
-    BOOST_REQUIRE(qpQuadProg.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
-
-    Eigen::VectorXd resQLD = qpQLD.SI_result();
-    Eigen::VectorXd resQuadProg = qpQuadProg.SI_result();
-    BOOST_CHECK(resQuadProg.isApprox(resQLD));
-    BOOST_REQUIRE_EQUAL(qpQLD.SI_fail(), 0);
-    BOOST_REQUIRE_EQUAL(qpQuadProg.SI_fail(), 0);
+    BOOST_REQUIRE_EQUAL(qp->SI_fail(), 0);
 }
 #endif
 
-#ifdef EIGEN_LSSOL_FOUND
-BOOST_FIXTURE_TEST_CASE(LSSOLOnQuadProgTest, Problem)
+#ifdef EIGEN_QLD
+BOOST_FIXTURE_TEST_CASE(QLDTest, Problem)
 {
-    copra::QuadProgDenseSolver qpQuadProg;
-    copra::LSSOLSolver qpLSSOL;
+    auto qp = solverFactory(copra::SolverFlag::QLD);
 
-    qpQuadProg.SI_problem(nrvars, nreqs, nrineqs);
-    qpLSSOL.SI_problem(nrvars, nreqs, nrineqs);
-    BOOST_REQUIRE(qpQuadProg.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
-    BOOST_REQUIRE(qpLSSOL.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
+    qp->SI_problem(nrvars, nreqs, nrineqs);
+    BOOST_REQUIRE(qp->SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
 
-    Eigen::VectorXd resQuadProg = qpQuadProg.SI_result();
-    Eigen::VectorXd resLSSOL = qpLSSOL.SI_result();
-    BOOST_CHECK(resLSSOL.isApprox(resQuadProg));
-    BOOST_REQUIRE_EQUAL(qpLSSOL.SI_fail(), 0);
+    BOOST_REQUIRE_EQUAL(qp->SI_fail(), 0);
 }
 #endif
 
-#ifdef EIGEN_GUROBI_FOUND
-BOOST_FIXTURE_TEST_CASE(GUROBIOnQuadProgTest, Problem)
+#ifdef EIGEN_LSSOL
+BOOST_FIXTURE_TEST_CASE(LSSOLTest, Problem)
 {
-    copra::QuadProgDenseSolver qpQuadProg;
-    copra::GUROBISolver qpGUROBI;
+    auto qp = solverFactory(copra::SolverFlag::LSSOL);
 
-    qpQuadProg.SI_problem(nrvars, nreqs, nrineqs);
-    qpGUROBI.SI_problem(nrvars, nreqs, nrineqs);
-    BOOST_REQUIRE(qpQuadProg.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
-    BOOST_REQUIRE(qpGUROBI.SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
+    qp->SI_problem(nrvars, nreqs, nrineqs);
+    BOOST_REQUIRE(qp->SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
 
-    Eigen::VectorXd resQuadProg = qpQuadProg.SI_result();
-    Eigen::VectorXd resGUROBI = qpGUROBI.SI_result();
-    BOOST_CHECK(resGUROBI.isApprox(resQuadProg, 1e-6));
-    BOOST_REQUIRE_EQUAL(qpGUROBI.SI_fail(), GRB_OPTIMAL);
+    BOOST_REQUIRE_EQUAL(qp->SI_fail(), 0);
+}
+#endif
+
+#ifdef EIGEN_GUROBI
+BOOST_FIXTURE_TEST_CASE(GUROBITest, Problem)
+{
+    auto qp = solverFactory(copra::SolverFlag::Gurobi);
+
+    qp->SI_problem(nrvars, nreqs, nrineqs);
+    BOOST_REQUIRE(qp->SI_solve(Q, c, Aeq, beq, Aineq, bineq, XL, XU));
+
+    BOOST_REQUIRE_EQUAL(qp->SI_fail(), 0);
 }
 #endif

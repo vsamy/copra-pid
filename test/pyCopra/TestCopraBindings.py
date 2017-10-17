@@ -223,8 +223,15 @@ class TestCopra(unittest.TestCase):
         controller = copra.LMPC(ps)
 
         copra.LMPC()
-        copra.LMPC(copra.SolverFlag.QuadProgDense)
-        copra.LMPC(ps, copra.SolverFlag.QuadProgDense)
+        if hasattr(copra.SolverFlag, 'QuadProgDense'):
+            copra.LMPC(copra.SolverFlag.QuadProgDense)
+            copra.LMPC(ps, copra.SolverFlag.QuadProgDense)
+        elif hasattr(copra.SolverFlag, 'QLD'):
+            copra.LMPC(copra.SolverFlag.QLD)
+            copra.LMPC(ps, copra.SolverFlag.QLD)
+        else:
+            copra.LMPC(copra.SolverFlag.Default)
+            copra.LMPC(ps, copra.SolverFlag.Default)
 
         controller.initializeController(ps)
 

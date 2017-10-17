@@ -5,6 +5,21 @@ include(Package_Definition NO_POLICY_SCOPE)
 
 PROJECT(copra)
 
+option(EIGEN_QLD "Add the quadprog qp solver into the lib" ON)
+option(EIGEN_QUADPROG "Add the qld qp solver into the lib" ON)
+
+if((NOT ${EIGEN_QLD}) AND (NOT ${EIGEN_QUADPROG}))
+	message(FATAL_ERROR "The lib needs at least one qp solver to work properly")
+endif()
+
+set(COMPILER_DEFS "")
+if(${EIGEN_QLD})
+	set(COMPILER_DEFS ${COMPILER_DEFS} "EIGEN_QLD")
+endif()
+if(${EIGEN_QUADPROG})
+	set(COMPILER_DEFS ${COMPILER_DEFS} "EIGEN_QUADPROG")
+endif()
+
 declare_PID_Package(
 	AUTHOR 			Vincent Samy
 	INSTITUTION		LIRMM

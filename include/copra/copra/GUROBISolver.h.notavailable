@@ -9,8 +9,8 @@
 #include <eigen-gurobi/Gurobi.h>
 
 // copra
-#include "SolverInterface.h"
-#include "config.hh"
+#include <copra/api.h>
+#include <copra/SolverInterface.h>
 
 namespace copra {
 

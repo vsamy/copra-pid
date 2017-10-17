@@ -15,13 +15,13 @@
 // along with copra.  If not, see
 // <http://www.gnu.org/licenses/>.
 
-#include <copra/LMPC.h>
+#include <boost/python.hpp>
 #include <copra/AutoSpan.h>
+#include <copra/LMPC.h>
 #include <copra/PreviewSystem.h>
 #include <copra/constraints.h>
 #include <copra/costFunctions.h>
 #include <copra/solverUtils.h>
-#include <boost/python.hpp>
 #include <memory>
 #include <string>
 
@@ -85,16 +85,19 @@ BOOST_PYTHON_MODULE(_copra)
 
     enum_<SolverFlag>("SolverFlag", "Flags to qp solver")
         .value("DEFAULT", SolverFlag::DEFAULT)
-#ifdef EIGEN_LSSOL_FOUND
-        .value("LSSOL", SolverFlag::LSSOL)
-#endif
-#ifdef EIGEN_GUROBI_FOUND
-        .value("GUROBIDense", SolverFlag::GUROBIDense)
-#endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//         .value("LSSOL", SolverFlag::LSSOL)
+// #endif
+// #ifdef EIGEN_GUROBI
+//         .value("GUROBIDense", SolverFlag::GUROBIDense)
+// #endif
+#ifdef EIGEN_QLD
         .value("QLD", SolverFlag::QLD)
 #endif
-        .value("QuadProgDense", SolverFlag::QuadProgDense);
+#ifdef EIGEN_QUADPROG
+        .value("QuadProgDense", SolverFlag::QuadProgDense)
+#endif
+        ;
 
     // Access Solvers from python
     def("pythonSolverFactory", &pythonSolverFactory, return_value_policy<manage_new_object>(), "Return a solver corresponding to the giden flag");
@@ -120,8 +123,10 @@ BOOST_PYTHON_MODULE(_copra)
 
     //AutoSpan
     class_<AutoSpan, boost::noncopyable>("AutoSpan", "Helper functions to automatically extend a matrix to a desired dimension.", no_init)
-        .def("spanMatrix", &AutoSpan::spanMatrix).staticmethod("spanMatrix")
-        .def("spanVector", &AutoSpan::spanVector).staticmethod("spanVector");
+        .def("spanMatrix", &AutoSpan::spanMatrix)
+        .staticmethod("spanMatrix")
+        .def("spanVector", &AutoSpan::spanVector)
+        .staticmethod("spanVector");
 
     //Constraint
     enum_<ConstraintFlag>("ConstraintFlag", "Flag to constraint type")

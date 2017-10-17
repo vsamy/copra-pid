@@ -31,12 +31,12 @@
 #include <Eigen/Core>
 
 // copra
-#include "LMPC.h"
-#include "PreviewSystem.h"
-#include "constraints.h"
-#include "costFunctions.h"
-#include "solverConfig.h"
-#include "solverUtils.h"
+#include <copra/LMPC.h>
+#include <copra/PreviewSystem.h>
+#include <copra/constraints.h>
+#include <copra/costFunctions.h>
+#include <copra/solverConfig.h>
+#include <copra/solverUtils.h>
 
 // Tests helpers
 #include "systems.h"
@@ -90,16 +90,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_BOUND_CONSTRAINTS, BoundedSystem)
         BOOST_REQUIRE_LE(control.maxCoeff(), uUpper(0) + 1e-6);
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+// //     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -155,16 +157,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_BOUND_CONSTRAINTS, BoundedSyste
         BOOST_REQUIRE_LE(control.maxCoeff(), uUpper(0) + 1e-6); // QuadProg allows to exceeds the constrain of a small amount.
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -261,16 +265,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSystem)
         BOOST_REQUIRE_LE(control.maxCoeff(), h(0) + 1e-6);
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -326,16 +332,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSys
         BOOST_REQUIRE_LE(control.maxCoeff(), h(0) + 1e-6); // QuadProg allows to exceeds the constrain of a small amount.
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -433,16 +441,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
         }
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -499,16 +509,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
         }
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -605,16 +617,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
         BOOST_REQUIRE_LE(velTraj.maxCoeff(), f(0) + 1e-6);
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -667,16 +681,18 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
         BOOST_REQUIRE_LE(velTraj.maxCoeff(), f(0) + 1e-6);
     };
 
-    pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
-#ifdef EIGEN_LSSOL_FOUND
-    pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+#ifdef EIGEN_QUADPROG
+    pcCheck("QuadProgDense", copra::SolverFlag::QuadProgDense);
 #endif
-#ifdef EIGEN_QLD_FOUND
+// #ifdef EIGEN_LSSOL
+//     pcCheck("LSSOL", copra::SolverFlag::LSSOL);
+// #endif
+#ifdef EIGEN_QLD
     pcCheck("QLD", copra::SolverFlag::QLD);
 #endif
-#ifdef EIGEN_GUROBI_FOUND
-    pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
-#endif
+// #ifdef EIGEN_GUROBI
+//     pcCheck("GUROBIDense", copra::SolverFlag::GUROBIDense);
+// #endif
 
     std::sort(solveTime.begin(), solveTime.end(),
         [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
@@ -877,7 +893,7 @@ BOOST_FIXTURE_TEST_CASE(CHECK_AUTOSPAN_AND_WHOLE_MATRIX_ON_MIXED_COST, IneqSyste
 
     auto MVec = std::vector<Eigen::MatrixXd>();
     MVec.push_back(M);
-    MVec.push_back(spanMatrix(M, nbStep, 1));
+    MVec.push_back(spanMatrix(M, nbStep, 1));pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
     auto nnVec = std::vector<Eigen::MatrixXd>();
     nnVec.push_back(Eigen::MatrixXd::Ones(2, 1));
     nnVec.push_back(spanMatrix(Eigen::MatrixXd::Ones(2, 1), nbStep));
