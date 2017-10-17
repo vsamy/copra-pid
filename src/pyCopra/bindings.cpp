@@ -63,7 +63,7 @@ auto NewControlCost = &createSharedPointer<ControlCost, const Eigen::MatrixXd&, 
 auto NewMixedCost = &createSharedPointer<MixedCost, const Eigen::MatrixXd&, const Eigen::MatrixXd&, const Eigen::VectorXd&>;
 } // namespace copra
 
-BOOST_PYTHON_MODULE(_copra)
+BOOST_PYTHON_MODULE(pyCopra)
 {
     using namespace copra;
     using namespace boost::python;

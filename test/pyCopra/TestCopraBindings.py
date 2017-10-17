@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import unittest
-import copra
+import pyCopra as copra
 from minieigen import *
 from sys import float_info
 

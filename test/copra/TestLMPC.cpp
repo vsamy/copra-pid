@@ -1,20 +1,5 @@
-// This file is part of copra.
 
-// copra is free software: you can redistribute it and/or
-// modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// copra is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with copra.  If not, see
-// <http://www.gnu.org/licenses/>.
-
+#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE TestPreviewControl
 
 // stl
@@ -35,7 +20,6 @@
 #include <copra/PreviewSystem.h>
 #include <copra/constraints.h>
 #include <copra/costFunctions.h>
-#include <copra/solverConfig.h>
 #include <copra/solverUtils.h>
 
 // Tests helpers
@@ -110,7 +94,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_BOUND_CONSTRAINTS, BoundedSystem)
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
 
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_BOUND_CONSTRAINTS, BoundedSystem)
@@ -176,7 +160,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_BOUND_CONSTRAINTS, BoundedSyste
     ss << "Solving fasteness: ";
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_MIXED_COST_WITH_BOUND_CONSTRAINTS, BoundedSystem)
@@ -285,7 +269,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSystem)
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
 
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSystem)
@@ -351,7 +335,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSys
     ss << "Solving fasteness: ";
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_MIXED_COST_WITH_INEQUALITY_CONSTRAINTS, IneqSystem)
@@ -461,7 +445,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
 
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
@@ -528,7 +512,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
     ss << "Solving fasteness: ";
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_MIXED_COST_WITH_MIXED_CONSTRAINTS, MixedSystem)
@@ -637,7 +621,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TARGET_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
 
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
@@ -700,7 +684,7 @@ BOOST_FIXTURE_TEST_CASE(MPC_TRAJECTORY_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
     ss << "Solving fasteness: ";
     for (auto sol : solveTime)
         ss << sol.first << " (" + std::to_string(sol.second) << "ms) > ";
-    BOOST_MESSAGE(ss.str());
+    BOOST_TEST_MESSAGE(ss.str());
 }
 
 BOOST_FIXTURE_TEST_CASE(MPC_MIXED_COST_WITH_EQUALITY_CONSTRAINTS, EqSystem)
@@ -893,7 +877,7 @@ BOOST_FIXTURE_TEST_CASE(CHECK_AUTOSPAN_AND_WHOLE_MATRIX_ON_MIXED_COST, IneqSyste
 
     auto MVec = std::vector<Eigen::MatrixXd>();
     MVec.push_back(M);
-    MVec.push_back(spanMatrix(M, nbStep, 1));pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);pcCheck("Default (QuadProgDense)", copra::SolverFlag::DEFAULT);
+    MVec.push_back(spanMatrix(M, nbStep, 1));
     auto nnVec = std::vector<Eigen::MatrixXd>();
     nnVec.push_back(Eigen::MatrixXd::Ones(2, 1));
     nnVec.push_back(spanMatrix(Eigen::MatrixXd::Ones(2, 1), nbStep));
