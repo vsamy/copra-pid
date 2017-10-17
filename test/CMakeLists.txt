@@ -1,9 +1,29 @@
 
-#declare your tests here
-# declare_PID_Component			(TEST_APPLICATION 	NAME  <test unit 1>	DIRECTORY <A DIR>) 
-# declare_PID_Component			(TEST_APPLICATION 	NAME  <test unit 2>	DIRECTORY <ANOTHER DIR>) 
+declare_PID_Component(
+    TEST_APPLICATION 
+    NAME test-copra
+    DIRECTORY copra
+)
+
+declare_PID_Component_Dependency(
+    COMPONENT test-copra
+    NATIVE copra
+)
+
+declare_PID_Component_Dependency(
+    COMPONENT test-copra
+    EXTERNAL boost-utest 
+    PACKAGE boost
+)
 
 
-#run_PID_Test (NAME checking-xxx COMPONENT <test unit 1> ARGUMENTS ...)
-#run_PID_Test (NAME checking-xxx COMPONENT <test unit 2> ARGUMENTS ...)
 
+run_PID_Test(
+    NAME testing-copra
+    COMPONENT test-copra
+)
+
+run_PID_Test(
+    NAME test-python-copra-wrapper
+    PYTHON ARGUMENTS pyCopra/TestCopraBindings.py
+)
