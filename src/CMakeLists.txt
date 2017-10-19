@@ -40,12 +40,12 @@ declare_PID_Component(
 )
 
 declare_PID_Component_Dependency(
-    COMPONENT pyCopra 
+    COMPONENT pyCopra
     NATIVE copra
 )
 
 declare_PID_Component_Dependency(
-    COMPONENT pyCopra
+    COMPONENT pyCopra 
     EXPORT NATIVE pygen
     PACKAGE pygen-converter
 )

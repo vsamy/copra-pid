@@ -18,16 +18,16 @@
 from .pyCopra import AutoSpan
 from .pyCopra import ControlConstraint
 from .pyCopra import LMPC
-from .pyCopra import NewControlBoundConstraint
-from .pyCopra import NewControlConstraint
-from .pyCopra import NewControlCost
-from .pyCopra import NewMixedConstraint
-from .pyCopra import NewMixedCost
-from .pyCopra import NewPreviewSystem
-from .pyCopra import NewTargetCost
-from .pyCopra import NewTrajectoryBoundConstraint
-from .pyCopra import NewTrajectoryConstraint
-from .pyCopra import NewTrajectoryCost
+from .pyCopra import ControlBoundConstraint
+from .pyCopra import ControlConstraint
+from .pyCopra import ControlCost
+from .pyCopra import MixedConstraint
+from .pyCopra import MixedCost
+from .pyCopra import PreviewSystem
+from .pyCopra import TargetCost
+from .pyCopra import TrajectoryBoundConstraint
+from .pyCopra import TrajectoryConstraint
+from .pyCopra import TrajectoryCost
 from .pyCopra import PreviewSystem
 from .pyCopra import SolverFlag
 from .pyCopra import TrajectoryConstraint
@@ -35,16 +35,16 @@ from .pyCopra import TrajectoryConstraint
 __all__ = ["AutoSpan",
            "ControlConstraint",
            "LMPC",
-           "NewControlBoundConstraint",
-           "NewControlConstraint",
-           "NewControlCost",
-           "NewMixedConstraint",
-           "NewMixedCost",
-           "NewPreviewSystem",
-           "NewTargetCost",
-           "NewTrajectoryBoundConstraint",
-           "NewTrajectoryConstraint",
-           "NewTrajectoryCost",
+           "ControlBoundConstraint",
+           "ControlConstraint",
+           "ControlCost",
+           "MixedConstraint",
+           "MixedCost",
+           "PreviewSystem",
+           "TargetCost",
+           "TrajectoryBoundConstraint",
+           "TrajectoryConstraint",
+           "TrajectoryCost",
            "PreviewSystem",
            "SolverFlag",
-           "TrajectoryConstraint"]           
+           "TrajectoryConstraint"]
