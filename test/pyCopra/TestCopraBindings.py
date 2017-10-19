@@ -74,10 +74,10 @@ class TestPyCopra(unittest.TestCase):
         xCost.weights(self.wx)
         uCost.weights(self.wu)
 
-        controller.addCost(xCost)
-        controller.addCost(uCost)
-        controller.addConstraint(trajConstr)
-        controller.addConstraint(contConstr)
+        controller.add_cost(xCost)
+        controller.add_cost(uCost)
+        controller.add_constraint(trajConstr)
+        controller.add_constraint(contConstr)
 
         self.assertTrue(controller.solve())
         control = controller.control()
@@ -94,8 +94,8 @@ class TestPyCopra(unittest.TestCase):
         self.assertLessEqual(np.amax(control), self.hineq[0])
 
         print "Test lmpc with inequalities"
-        print controller.solveTime(), "s"
-        print controller.solveAndBuildTime(), "s"
+        print controller.solve_time(), "s"
+        print controller.solve_and_build_time(), "s"
         print
 
     def test_lmpc_mixed(self):
@@ -110,9 +110,9 @@ class TestPyCopra(unittest.TestCase):
         xCost.weights(self.wx)
         uCost.weights(self.wu)
 
-        controller.addCost(xCost)
-        controller.addCost(uCost)
-        controller.addConstraint(mixedConstr)
+        controller.add_cost(xCost)
+        controller.add_cost(uCost)
+        controller.add_constraint(mixedConstr)
 
         self.assertTrue(controller.solve())
         control = controller.control()
@@ -135,8 +135,8 @@ class TestPyCopra(unittest.TestCase):
             self.assertLessEqual(res, self.hineq[0])
 
         print "Test lmpc with inequalities"
-        print controller.solveTime(), "s"
-        print controller.solveAndBuildTime(), "s"
+        print controller.solve_time(), "s"
+        print controller.solve_and_build_time(), "s"
         print
 
     def test_lmpc_bound(self):
@@ -152,10 +152,10 @@ class TestPyCopra(unittest.TestCase):
         xCost.weights(self.wx)
         uCost.weights(self.wu)
 
-        controller.addCost(xCost)
-        controller.addCost(uCost)
-        controller.addConstraint(trajConstr)
-        controller.addConstraint(contConstr)
+        controller.add_cost(xCost)
+        controller.add_cost(uCost)
+        controller.add_constraint(trajConstr)
+        controller.add_constraint(contConstr)
 
         self.assertTrue(controller.solve())
         control = controller.control()
@@ -173,8 +173,8 @@ class TestPyCopra(unittest.TestCase):
         self.assertLessEqual(max(control), self.uUpper[0] + 1e-6)
 
         print "Test lmpc with bounds"
-        print controller.solveTime(), "s"
-        print controller.solveAndBuildTime(), "s"
+        print controller.solve_time(), "s"
+        print controller.solve_and_build_time(), "s"
         print
 
     def test_lmpc_eq(self):
@@ -189,9 +189,9 @@ class TestPyCopra(unittest.TestCase):
         xCost.weights(self.wx)
         uCost.weights(self.wu)
 
-        controller.addCost(xCost)
-        controller.addCost(uCost)
-        controller.addConstraint(trajConstr)
+        controller.add_cost(xCost)
+        controller.add_cost(uCost)
+        controller.add_constraint(trajConstr)
 
         self.assertTrue(controller.solve())
         control = controller.control()
@@ -208,8 +208,8 @@ class TestPyCopra(unittest.TestCase):
         self.assertLessEqual(max(velTraj), self.feq[0] + 1e-6)
 
         print "Test lmpc with equalities"
-        print controller.solveTime(), "s"
-        print controller.solveAndBuildTime(), "s"
+        print controller.solve_time(), "s"
+        print controller.solve_and_build_time(), "s"
         print
 
     def test_constructors_initialisations(self):
@@ -230,7 +230,7 @@ class TestPyCopra(unittest.TestCase):
             pyCopra.LMPC(pyCopra.SolverFlag.Default)
             pyCopra.LMPC(ps, pyCopra.SolverFlag.Default)
 
-        controller.initializeController(ps)
+        controller.initialize_controller(ps)
 
     @unittest.expectedFailure
     def test_fail_construct_trajectory(self):
@@ -272,16 +272,16 @@ class TestPyCopra(unittest.TestCase):
         M_mixed = np.ones((1, 2))
         mixedCost = pyCopra.MixedCost(M_mixed, self.N, -self.ud)
         
-        controller.addConstraint(trajConstr)
-        controller.addConstraint(contConstr)
-        controller.addConstraint(trajEqConstr)
-        controller.addConstraint(contEqConstr)
-        controller.addConstraint(trajBdConstr)
-        controller.addConstraint(contBdConstr)
-        controller.addCost(targetCost)
-        controller.addCost(trajectoryCost)
-        controller.addCost(controlCost)
-        controller.addCost(mixedCost)
+        controller.add_constraint(trajConstr)
+        controller.add_constraint(contConstr)
+        controller.add_constraint(trajEqConstr)
+        controller.add_constraint(contEqConstr)
+        controller.add_constraint(trajBdConstr)
+        controller.add_constraint(contBdConstr)
+        controller.add_cost(targetCost)
+        controller.add_cost(trajectoryCost)
+        controller.add_cost(controlCost)
+        controller.add_cost(mixedCost)
 
         del trajConstr
 
@@ -312,10 +312,10 @@ class TestPyCopra(unittest.TestCase):
         targetCost.weights(self.wx)
         controlCost.weights(self.wu)
 
-        controller.addConstraint(trajConstr)
-        controller.addConstraint(contConstr)
-        controller.addCost(targetCost)
-        controller.addCost(controlCost)
+        controller.add_constraint(trajConstr)
+        controller.add_constraint(contConstr)
+        controller.add_cost(targetCost)
+        controller.add_cost(controlCost)
 
         self.assertTrue(controller.solve())
         control = controller.control()
@@ -340,27 +340,27 @@ class TestPyCopra(unittest.TestCase):
         # Test trajectory constraint throws
         with self.assertRaises(RuntimeError):
             constr = pyCopra.TrajectoryConstraint(np.identity(5), np.ones((2,)))
-            controller.addConstraint(constr)
+            controller.add_constraint(constr)
 
         # Test control constraint throws
         with self.assertRaises(RuntimeError):
             constr = pyCopra.ControlConstraint(np.identity(5), np.ones((2,)))
-            controller.addConstraint(constr)
+            controller.add_constraint(constr)
 
         # Test mixed constraint throws
         with self.assertRaises(RuntimeError):
             constr = pyCopra.MixedConstraint(np.identity(5), np.identity(5), np.ones((2,)))
-            controller.addConstraint(constr)
+            controller.add_constraint(constr)
 
         # Test trajectory bound constraint throws
         with self.assertRaises(RuntimeError):
             constr = pyCopra.TrajectoryBoundConstraint(np.ones((3,)), np.ones((2,)))
-            controller.addConstraint(constr)
+            controller.add_constraint(constr)
 
         # Test control bound constraint throws
         with self.assertRaises(RuntimeError):
             constr = pyCopra.ControlBoundConstraint(np.ones((3,)), np.ones((2,)))
-            controller.addConstraint(constr)
+            controller.add_constraint(constr)
 
     def test_dynamic_walk(self):
         print "test_dynamic_walk"
@@ -461,11 +461,11 @@ class TestPyCopra(unittest.TestCase):
         M_cost = np.identity(6)
         targetCost = pyCopra.TargetCost(M_cost, -x_goal)
 
-        controller.addConstraint(contConstr)
-        controller.addCost(targetCost)
+        controller.add_constraint(contConstr)
+        controller.add_cost(targetCost)
 
         controller.solve()
-        print controller.solveTime(), "s"
+        print controller.solve_time(), "s"
 
 nb_steps = 10
 

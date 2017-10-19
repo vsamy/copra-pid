@@ -15,6 +15,7 @@
 # along with copra.  If not, see
 # <http://www.gnu.org/licenses/>.
 
+from .pyCopra import python_solver_factory
 from .pyCopra import AutoSpan
 from .pyCopra import ControlConstraint
 from .pyCopra import LMPC
@@ -32,7 +33,8 @@ from .pyCopra import PreviewSystem
 from .pyCopra import SolverFlag
 from .pyCopra import TrajectoryConstraint
 
-__all__ = ["AutoSpan",
+__all__ = ["python_solver_factory",
+           "AutoSpan",
            "ControlConstraint",
            "LMPC",
            "ControlBoundConstraint",

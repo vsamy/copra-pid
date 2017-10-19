@@ -125,14 +125,14 @@ BOOST_PYTHON_MODULE(pyCopra)
         .def("__init__", py::make_constructor(PreviewSystem1))
         .def("__init__", py::make_constructor(PreviewSystem2))
         .def("system", &PreviewSystem::system)
-        .def("updateSystem", &PreviewSystem::updateSystem)
-        .def_readwrite("isUpdated", &PreviewSystem::isUpdated)
-        .def_readwrite("nrUStep", &PreviewSystem::nrUStep)
-        .def_readwrite("nrXStep", &PreviewSystem::nrXStep)
-        .def_readwrite("xDim", &PreviewSystem::xDim)
-        .def_readwrite("uDim", &PreviewSystem::uDim)
-        .def_readwrite("fullXDim", &PreviewSystem::fullXDim)
-        .def_readwrite("fullUDim", &PreviewSystem::fullUDim)
+        .def("update_system", &PreviewSystem::updateSystem)
+        .def_readwrite("is_updated", &PreviewSystem::isUpdated)
+        .def_readwrite("nr_u_step", &PreviewSystem::nrUStep)
+        .def_readwrite("nr_x_step", &PreviewSystem::nrXStep)
+        .def_readwrite("x_dim", &PreviewSystem::xDim)
+        .def_readwrite("u_dim", &PreviewSystem::uDim)
+        .def_readwrite("full_x_Dim", &PreviewSystem::fullXDim)
+        .def_readwrite("full_u_Dim", &PreviewSystem::fullUDim)
         .add_property("x0", py::make_getter(&PreviewSystem::x0, py::return_value_policy<py::copy_non_const_reference>()),
             py::make_setter(&PreviewSystem::x0))
         .add_property("A", py::make_getter(&PreviewSystem::A, py::return_value_policy<py::copy_non_const_reference>()),
@@ -150,11 +150,11 @@ BOOST_PYTHON_MODULE(pyCopra)
 
     // AutoSpan
     py::class_<AutoSpan, boost::noncopyable>("AutoSpan", "Helper functions to automatically extend a matrix to a desired dimension.", py::no_init)
-        .def("spanMatrix", py::make_function(autoSpanMatrix0))
-        .def("spanMatrix", py::make_function(autoSpanMatrix1))
-        .staticmethod("spanMatrix")
-        .def("spanVector", py::make_function(autoSpanVector))
-        .staticmethod("spanVector");
+        .def("span_matrix", py::make_function(autoSpanMatrix0))
+        .def("span_matrix", py::make_function(autoSpanMatrix1))
+        .staticmethod("span_matrix")
+        .def("span_vector", py::make_function(autoSpanVector))
+        .staticmethod("span_vector");
 
     // Constraint flags
     py::enum_<ConstraintFlag>("ConstraintFlag", "Flag to constraint type")
@@ -189,12 +189,12 @@ BOOST_PYTHON_MODULE(pyCopra)
     };
 
     py::class_<ConstraintWrap, boost::noncopyable>("Constraint", py::no_init)
-        .def("autoSpan", py::pure_virtual(&Constraint::autoSpan))
-        .def("initializeConstraint", py::pure_virtual(&Constraint::initializeConstraint))
+        .def("auto_span", py::pure_virtual(&Constraint::autoSpan))
+        .def("initialize_constraint", py::pure_virtual(&Constraint::initializeConstraint))
         .def("update", py::pure_virtual(&Constraint::update))
-        .def("constraintType", py::pure_virtual(&Constraint::constraintType))
+        .def("constraint_type", py::pure_virtual(&Constraint::constraintType))
         .def("name", &Constraint::name, py::return_value_policy<py::copy_const_reference>())
-        .def("nrConstr", &Constraint::nrConstr);
+        .def("nr_constr", &Constraint::nrConstr);
 
     // Equality and Inequality constraints wrap
     struct EqIneqConstraintWrap : EqIneqConstraint, py::wrapper<EqIneqConstraint> {
@@ -284,7 +284,7 @@ BOOST_PYTHON_MODULE(pyCopra)
     };
 
     py::class_<CostFunctionWrap, boost::noncopyable>("CostFunction", py::no_init) // Disable the constructor because of move semantics. No need anyway.
-        .def("initializeConstraint", &CostFunction::initializeCost, &CostFunctionWrap::default_initializeCost)
+        .def("initialize_constraint", &CostFunction::initializeCost, &CostFunctionWrap::default_initializeCost)
         .def("update", py::pure_virtual(&CostFunction::update))
         .def("name", &CostFunction::name, py::return_value_policy<py::copy_const_reference>())
         .def("Q", &CostFunction::Q, py::return_value_policy<py::copy_const_reference>())
@@ -306,16 +306,16 @@ BOOST_PYTHON_MODULE(pyCopra)
     py::class_<LMPC, boost::noncopyable>("LMPC",
         "LMPC. This class runs the lmpc with the desired QP and fills the PreviewSystem it is attach to", py::init<py::optional<SolverFlag>>())
         .def(py::init<const std::shared_ptr<PreviewSystem>&, py::optional<SolverFlag>>())
-        .def("selectQPSolver", &LMPC::selectQPSolver)
-        .def("initializeController", &LMPC::initializeController)
+        .def("select_qp_solver", &LMPC::selectQPSolver)
+        .def("initialize_controller", &LMPC::initializeController)
         .def("solve", &LMPC::solve)
-        .def("solveTime", &LMPC::solveTime)
-        .def("solveAndBuildTime", &LMPC::solveAndBuildTime)
+        .def("solve_time", &LMPC::solveTime)
+        .def("solve_and_build_time", &LMPC::solveAndBuildTime)
         .def("control", &LMPC::control, py::return_value_policy<py::copy_const_reference>())
         .def("trajectory", &LMPC::trajectory)
-        .def("addCost", &LMPC::addCost)
-        .def("addConstraint", &LMPC::addConstraint)
-        .def("resetConstraints", &LMPC::resetConstraints);
+        .def("add_cost", &LMPC::addCost)
+        .def("add_constraint", &LMPC::addConstraint)
+        .def("reset_constraints", &LMPC::resetConstraints);
 
     // Implicit conversion of pointers
     py::implicitly_convertible<std::shared_ptr<ControlBoundConstraint>, std::shared_ptr<Constraint>>();
