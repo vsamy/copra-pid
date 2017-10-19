@@ -82,6 +82,12 @@ Eigen::MatrixXd autoSpanVector(Eigen::VectorXd vec, Eigen::Index new_dim)
     return vec;
 }
 
+// Preview system getters
+// Eigen::MatrixXd getPSA(const Eigen::MatrixXd& vec)
+// {
+//     return vec;
+// }
+
 } // namespace copra
 
 BOOST_PYTHON_MODULE(pyCopra)
@@ -115,7 +121,7 @@ BOOST_PYTHON_MODULE(pyCopra)
     py::def("python_solver_factory", &pythonSolverFactory, py::return_value_policy<py::manage_new_object>(), "Return a solver corresponding to the given flag");
 
     // Preview System
-    py::class_<PreviewSystem, std::shared_ptr<PreviewSystem> >("PreviewSystem", "The PreviewSystem is a read-write structure that holds all the information of the system.", py::no_init)
+    py::class_<PreviewSystem, std::shared_ptr<PreviewSystem>>("PreviewSystem", "The PreviewSystem is a read-write structure that holds all the information of the system.", py::no_init)
         .def("__init__", py::make_constructor(PreviewSystem1))
         .def("__init__", py::make_constructor(PreviewSystem2))
         .def("system", &PreviewSystem::system)
@@ -127,13 +133,20 @@ BOOST_PYTHON_MODULE(pyCopra)
         .def_readwrite("uDim", &PreviewSystem::uDim)
         .def_readwrite("fullXDim", &PreviewSystem::fullXDim)
         .def_readwrite("fullUDim", &PreviewSystem::fullUDim)
-        .def_readwrite("x0", &PreviewSystem::x0)
-        .def_readwrite("A", &PreviewSystem::A)
-        .def_readwrite("B", &PreviewSystem::B)
-        .def_readwrite("d", &PreviewSystem::d)
-        .def_readwrite("Phi", &PreviewSystem::Phi)
-        .def_readwrite("Psi", &PreviewSystem::Psi)
-        .def_readwrite("xi", &PreviewSystem::xi);
+        .add_property("x0", py::make_getter(&PreviewSystem::x0, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::x0))
+        .add_property("A", py::make_getter(&PreviewSystem::A, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::A))
+        .add_property("B", py::make_getter(&PreviewSystem::B, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::B))
+        .add_property("d", py::make_getter(&PreviewSystem::d, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::d))
+        .add_property("Phi", py::make_getter(&PreviewSystem::Phi, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::Phi))
+        .add_property("Psi", py::make_getter(&PreviewSystem::Psi, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::Psi))
+        .add_property("xi", py::make_getter(&PreviewSystem::xi, py::return_value_policy<py::copy_non_const_reference>()),
+            py::make_setter(&PreviewSystem::xi));
 
     // AutoSpan
     py::class_<AutoSpan, boost::noncopyable>("AutoSpan", "Helper functions to automatically extend a matrix to a desired dimension.", py::no_init)
@@ -208,23 +221,23 @@ BOOST_PYTHON_MODULE(pyCopra)
         }
     };
 
-    py::class_<EqIneqConstraintWrap, boost::noncopyable, py::bases<Constraint> >("EqIneqConstraint", py::init<const std::string&, bool>())
+    py::class_<EqIneqConstraintWrap, boost::noncopyable, py::bases<Constraint>>("EqIneqConstraint", py::init<const std::string&, bool>())
         .def("A", &EqIneqConstraint::A, py::return_value_policy<py::copy_const_reference>())
         .def("b", &EqIneqConstraint::b, py::return_value_policy<py::copy_const_reference>());
 
     // Constraints
-    py::class_<TrajectoryConstraint, std::shared_ptr<TrajectoryConstraint>, boost::noncopyable, py::bases<EqIneqConstraint> >("TrajectoryConstraint", "Trajectory constraint. The object is instansiable through a TrajectoryConstraint function", py::no_init)
+    py::class_<TrajectoryConstraint, std::shared_ptr<TrajectoryConstraint>, boost::noncopyable, py::bases<EqIneqConstraint>>("TrajectoryConstraint", "Trajectory constraint. The object is instansiable through a TrajectoryConstraint function", py::no_init)
         .def("__init__", py::make_constructor(TrajectoryConstraint1))
         .def("__init__", py::make_constructor(TrajectoryConstraint2));
-    py::class_<ControlConstraint, std::shared_ptr<ControlConstraint>, boost::noncopyable, py::bases<EqIneqConstraint> >("ControlConstraint", "Control constraint. The object is instansiable through a ControlConstraint function", py::no_init)
+    py::class_<ControlConstraint, std::shared_ptr<ControlConstraint>, boost::noncopyable, py::bases<EqIneqConstraint>>("ControlConstraint", "Control constraint. The object is instansiable through a ControlConstraint function", py::no_init)
         .def("__init__", py::make_constructor(ControlConstraint1))
         .def("__init__", py::make_constructor(ControlConstraint2));
-    py::class_<MixedConstraint, std::shared_ptr<MixedConstraint>, boost::noncopyable, py::bases<EqIneqConstraint> >("MixedConstraint", "Mixed constraint. The object is instansiable through a MixedConstraint function", py::no_init)
+    py::class_<MixedConstraint, std::shared_ptr<MixedConstraint>, boost::noncopyable, py::bases<EqIneqConstraint>>("MixedConstraint", "Mixed constraint. The object is instansiable through a MixedConstraint function", py::no_init)
         .def("__init__", py::make_constructor(MixedConstraint1))
         .def("__init__", py::make_constructor(MixedConstraint2));
-    py::class_<TrajectoryBoundConstraint, std::shared_ptr<TrajectoryBoundConstraint>, boost::noncopyable, py::bases<EqIneqConstraint> >("TrajectoryBoundConstraint", "Trajectory Bound constraint. The object is instansiable through a TrajectoryBoundConstraint function", py::no_init)
+    py::class_<TrajectoryBoundConstraint, std::shared_ptr<TrajectoryBoundConstraint>, boost::noncopyable, py::bases<EqIneqConstraint>>("TrajectoryBoundConstraint", "Trajectory Bound constraint. The object is instansiable through a TrajectoryBoundConstraint function", py::no_init)
         .def("__init__", py::make_constructor(TrajectoryBoundConstraint1));
-    py::class_<ControlBoundConstraint, std::shared_ptr<ControlBoundConstraint>, boost::noncopyable, py::bases<Constraint> >("ControlBoundConstraint", "Control Bound constraint. The object is instansiable through a ControlBoundConstraint function", py::no_init)
+    py::class_<ControlBoundConstraint, std::shared_ptr<ControlBoundConstraint>, boost::noncopyable, py::bases<Constraint>>("ControlBoundConstraint", "Control Bound constraint. The object is instansiable through a ControlBoundConstraint function", py::no_init)
         .def("__init__", py::make_constructor(ControlBoundConstraint1))
         .def("lower", &ControlBoundConstraint::lower, py::return_value_policy<py::copy_const_reference>())
         .def("upper", &ControlBoundConstraint::upper, py::return_value_policy<py::copy_const_reference>());
@@ -280,19 +293,19 @@ BOOST_PYTHON_MODULE(pyCopra)
         .def("weights", &CostFunction::weights<double>);
 
     // Costs
-    py::class_<TrajectoryCost, std::shared_ptr<TrajectoryCost>, boost::noncopyable, py::bases<CostFunction> >("TrajectoryCost", "Trajectory cost. The object is instansiable through a TrajectoryCost function", py::no_init)
+    py::class_<TrajectoryCost, std::shared_ptr<TrajectoryCost>, boost::noncopyable, py::bases<CostFunction>>("TrajectoryCost", "Trajectory cost. The object is instansiable through a TrajectoryCost function", py::no_init)
         .def("__init__", py::make_constructor(TrajectoryCost1));
-    py::class_<TargetCost, std::shared_ptr<TargetCost>, boost::noncopyable, py::bases<CostFunction> >("TargetCost", "Target cost. The object is instansiable through a TargetCost function", py::no_init)
+    py::class_<TargetCost, std::shared_ptr<TargetCost>, boost::noncopyable, py::bases<CostFunction>>("TargetCost", "Target cost. The object is instansiable through a TargetCost function", py::no_init)
         .def("__init__", py::make_constructor(TargetCost1));
-    py::class_<ControlCost, std::shared_ptr<ControlCost>, boost::noncopyable, py::bases<CostFunction> >("ControlCost", "Control cost. The object is instansiable through a ControlCost function", py::no_init)
+    py::class_<ControlCost, std::shared_ptr<ControlCost>, boost::noncopyable, py::bases<CostFunction>>("ControlCost", "Control cost. The object is instansiable through a ControlCost function", py::no_init)
         .def("__init__", py::make_constructor(ControlCost1));
-    py::class_<MixedCost, std::shared_ptr<MixedCost>, boost::noncopyable, py::bases<CostFunction> >("MixedCost", "Mixed cost. The object is instansiable through a MixedCost function", py::no_init)
+    py::class_<MixedCost, std::shared_ptr<MixedCost>, boost::noncopyable, py::bases<CostFunction>>("MixedCost", "Mixed cost. The object is instansiable through a MixedCost function", py::no_init)
         .def("__init__", py::make_constructor(MixedCost1));
 
     // LMPC
     py::class_<LMPC, boost::noncopyable>("LMPC",
-        "LMPC. This class runs the lmpc with the desired QP and fills the PreviewSystem it is attach to", py::init<py::optional<SolverFlag> >())
-        .def(py::init<const std::shared_ptr<PreviewSystem>&, py::optional<SolverFlag> >())
+        "LMPC. This class runs the lmpc with the desired QP and fills the PreviewSystem it is attach to", py::init<py::optional<SolverFlag>>())
+        .def(py::init<const std::shared_ptr<PreviewSystem>&, py::optional<SolverFlag>>())
         .def("selectQPSolver", &LMPC::selectQPSolver)
         .def("initializeController", &LMPC::initializeController)
         .def("solve", &LMPC::solve)
@@ -305,13 +318,13 @@ BOOST_PYTHON_MODULE(pyCopra)
         .def("resetConstraints", &LMPC::resetConstraints);
 
     // Implicit conversion of pointers
-    py::implicitly_convertible<std::shared_ptr<ControlBoundConstraint>, std::shared_ptr<Constraint> >();
-    py::implicitly_convertible<std::shared_ptr<ControlConstraint>, std::shared_ptr<Constraint> >();
-    py::implicitly_convertible<std::shared_ptr<ControlCost>, std::shared_ptr<CostFunction> >();
-    py::implicitly_convertible<std::shared_ptr<MixedConstraint>, std::shared_ptr<Constraint> >();
-    py::implicitly_convertible<std::shared_ptr<MixedCost>, std::shared_ptr<CostFunction> >();
-    py::implicitly_convertible<std::shared_ptr<TargetCost>, std::shared_ptr<CostFunction> >();
-    py::implicitly_convertible<std::shared_ptr<TrajectoryBoundConstraint>, std::shared_ptr<Constraint> >();
-    py::implicitly_convertible<std::shared_ptr<TrajectoryConstraint>, std::shared_ptr<Constraint> >();
-    py::implicitly_convertible<std::shared_ptr<TrajectoryCost>, std::shared_ptr<CostFunction> >();
+    py::implicitly_convertible<std::shared_ptr<ControlBoundConstraint>, std::shared_ptr<Constraint>>();
+    py::implicitly_convertible<std::shared_ptr<ControlConstraint>, std::shared_ptr<Constraint>>();
+    py::implicitly_convertible<std::shared_ptr<ControlCost>, std::shared_ptr<CostFunction>>();
+    py::implicitly_convertible<std::shared_ptr<MixedConstraint>, std::shared_ptr<Constraint>>();
+    py::implicitly_convertible<std::shared_ptr<MixedCost>, std::shared_ptr<CostFunction>>();
+    py::implicitly_convertible<std::shared_ptr<TargetCost>, std::shared_ptr<CostFunction>>();
+    py::implicitly_convertible<std::shared_ptr<TrajectoryBoundConstraint>, std::shared_ptr<Constraint>>();
+    py::implicitly_convertible<std::shared_ptr<TrajectoryConstraint>, std::shared_ptr<Constraint>>();
+    py::implicitly_convertible<std::shared_ptr<TrajectoryCost>, std::shared_ptr<CostFunction>>();
 }
