@@ -31,7 +31,7 @@ declare_PID_Package(
 	DESCRIPTION 	"This a C++ implementation of a Time Invariant Linear Model Predictive Controller (LMPC) done in C++14 with python bindings"
 )
 
-set_PID_Package_Version(1 0 1)
+set_PID_Package_Version(1 1 0)
 
 #now finding packages
 declare_PID_Package_Dependency(PACKAGE eigen EXTERNAL VERSION 3.3.4)
