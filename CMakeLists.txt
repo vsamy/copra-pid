@@ -23,7 +23,7 @@ endif()
 declare_PID_Package(
 	AUTHOR 			Vincent Samy
 	INSTITUTION		LIRMM
-	MAIL			vincent.samy@lirmm.fr
+	MAIL			vsamy@outlook.fr
 	ADDRESS 		git@github.com:vsamy/copra.git
 	PUBLIC_ADDRESS	https://github.com/vsamy/copra.git
 	YEAR 			2017 
